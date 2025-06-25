@@ -1,0 +1,35 @@
+# Carpetas de Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build
+bin/
+obj/
+
+# Archivos de configuración específicos del entorno
+*.userosscache
+*.sln.docstates
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Archivos de Rider (por si usas JetBrains)
+.idea/
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Publicaciones
+*.publish.xml
+
+# Archivos de Git conflictivos
+*.orig
+
+# NCrunch
+*.ncrunch*
