@@ -6,7 +6,7 @@
         public string Email { get; private set; } = null!;
 
         public ICollection<Project> Projects { get; private set; } = new List<Project>();
-        public ICollection<Task> Tasks { get; private set; } = new List<Task>();
+        public ICollection<Task> AssignedTasks { get; private set; } = new List<Task>();
 
         private User() { } //EF Core
 
