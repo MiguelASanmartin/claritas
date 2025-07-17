@@ -2,11 +2,11 @@
 {
     public interface ITaskRepository
     {
-        Task<Entities.Task> GetByIdAsync(Guid id);
-        Task<Entities.Task> GetByProjectIdAsync(Guid projectId);
-        Task<Entities.Task> GetByUserIdAsync(Guid userId);
-        Task<Entities.Task> GetByStatusAsync(TaskStatus status);
-        Task<Entities.Task> GetOverdueTasksAsync();
+        Task<Entities.Task?> GetByIdAsync(Guid id);
+        Task<IEnumerable<Entities.Task>> GetByProjectIdAsync(Guid projectId);
+        Task<IEnumerable<Entities.Task>> GetByUserIdAsync(Guid userId);
+        Task<IEnumerable<Entities.Task>> GetByStatusAsync(ValueObjects.TaskStatus status);
+        Task<IEnumerable<Entities.Task>> GetOverdueTasksAsync();
         Task<IEnumerable<Entities.Task>> GetAllAsync();
 
         Task AddAsync(Entities.Task task);

@@ -4,7 +4,7 @@ namespace TMS.Domain.Interfaces
 {
     public interface IProjectRepository
     {
-        Task<Project> GetByIdAsync(Guid id);
+        Task<Project?> GetByIdAsync(Guid id);
         Task<IEnumerable<Project>> GetByOwnerIdAsync(Guid ownerId);
         Task<IEnumerable<Project>> GetAllAsync();
 
