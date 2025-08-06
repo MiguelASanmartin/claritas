@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using TMS.Application.Commands;
 using TMS.Application.DTOs.Responses;
+using TMS.Application.Extensions;
 using TMS.Domain.Interfaces;
 using TMS.Domain.ValueObjects;
 
@@ -12,14 +12,12 @@ namespace TMS.Application.Handlers
         private readonly ITaskRepository _taskRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
-        public CreateTaskHandler(ITaskRepository taskRepository, IProjectRepository projectRepository, IUserRepository userRepository, IMapper mapper)
+        public CreateTaskHandler(ITaskRepository taskRepository, IProjectRepository projectRepository, IUserRepository userRepository)
         {
             _taskRepository = taskRepository;
             _projectRepository = projectRepository;
             _userRepository = userRepository;
-            _mapper = mapper;
         }
 
         public async Task<TaskResponse> Handle(CreateTaskCommand command, CancellationToken cancellationToken)
@@ -38,7 +36,7 @@ namespace TMS.Application.Handlers
 
             await _taskRepository.AddAsync(task);
 
-            return _mapper.Map<TaskResponse>(task);
+            return task.ToResponse();
         }
 
         private async Task ValidateProjectExists(Guid projectId)

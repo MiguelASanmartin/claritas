@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using TMS.Application.Commands;
 using TMS.Application.DTOs.Responses;
+using TMS.Application.Extensions;
 using TMS.Domain.Interfaces;
 
 namespace TMS.Application.Handlers
@@ -9,12 +9,10 @@ namespace TMS.Application.Handlers
     public sealed class CompleteTaskHandler : IRequestHandler<CompleteTaskCommand, TaskResponse>
     {
         private readonly ITaskRepository _taskRepository;
-        private readonly Mapper _mapper;
 
-        public CompleteTaskHandler(ITaskRepository taskRepository, Mapper mapper)
+        public CompleteTaskHandler(ITaskRepository taskRepository)
         {
             _taskRepository = taskRepository;
-            _mapper = mapper;
         }
 
         public async Task<TaskResponse> Handle(CompleteTaskCommand command, CancellationToken cancellationToken)
@@ -27,7 +25,7 @@ namespace TMS.Application.Handlers
 
             await _taskRepository.UpdateAsync(task);
 
-            return _mapper.Map<TaskResponse>(task);
+            return task.ToResponse();
         }
     }
 }

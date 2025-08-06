@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TMS.Domain.Entities;
 using TMS.Infrastructure.Data.Configuration;
 
