@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # "Caja" con SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest    # Descargar SQL Server
+    container_name: taskmanagement-sqlserver             # Nombre de la "caja"
+    environment:
+      - ACCEPT_EULA=Y                                    # Aceptar licencia SQL Server
+      - SA_PASSWORD=${SA_PASSWORD}                     # Password admin
+      - MSSQL_PID=Developer                              # Versión gratis
+    ports:
+      - "1433:1433"                                      # Puerto SQL Server
+    volumes:
+      - sqlserver_data:/var/opt/mssql                    # Guardar datos permanentemente
+    networks:
+      - taskmanagement
+
+  # "Caja" con interfaz web para ver la BD (opcional, pero útil)
+  adminer:
+    image: adminer                                       # Interfaz web para BD
+    container_name: taskmanagement-adminer
+    ports:
+      - "8080:8080"                                      # Acceder via http://localhost:8080
+    networks:
+      - taskmanagement
+    depends_on:
+      - sqlserver                                        # Esperar a que SQL Server esté listo
+
+# Volumen permanente (para que no se pierdan datos)
+volumes:
+  sqlserver_data:
+
+# Red virtual (para que contenedores se hablen)
+networks:
+  taskmanagement:

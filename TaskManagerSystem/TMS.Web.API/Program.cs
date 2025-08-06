@@ -3,6 +3,11 @@ using TMS.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (OperatingSystem.IsLinux() || Environment.GetEnvironmentVariable("DOCKER_ENV") == "true")
+{
+    builder.Configuration.AddJsonFile("appsettings.Linux.json", optional: true);
+}
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
