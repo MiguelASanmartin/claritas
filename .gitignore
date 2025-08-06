@@ -33,3 +33,7 @@ ehthumbs.db
 
 # NCrunch
 *.ncrunch*
+
+# Env
+.env
+*.env
