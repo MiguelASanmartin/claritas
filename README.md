@@ -3,6 +3,7 @@
 Enterprise-grade Task Management System built with Clean Architecture, CQRS, and .NET 8. Features cross-platform development with Docker containerization and comprehensive API documentation.
 
 ## Architecture
+'''text
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐    ┌──────────────────┐
 │   Presentation  │───▶│   Application    │───▶│  Infrastructure │───▶│     Domain       │
 │                 │    │                  │    │                 │    │                  │
@@ -13,6 +14,7 @@ Enterprise-grade Task Management System built with Clean Architecture, CQRS, and
 └─────────────────┘    └──────────────────┘    └─────────────────┘    └──────────────────┘
 
 ### Project Structure
+''' text
 TaskManagementSystem/
 ├── TMS.Domain/             # Core business logic and entities
 │   ├── Entities/           # User, Project, Task

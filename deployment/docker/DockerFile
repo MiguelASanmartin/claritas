@@ -1,25 +1,29 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
-# Imagen para compilar
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar archivos de proyecto
+# Copy project files for restore (layer caching)
 COPY ["TMS.Web.API/TMS.Web.API.csproj", "TMS.Web.API/"]
 COPY ["TMS.Application/TMS.Application.csproj", "TMS.Application/"]
 COPY ["TMS.Domain/TMS.Domain.csproj", "TMS.Domain/"]
 COPY ["TMS.Infrastructure/TMS.Infrastructure.csproj", "TMS.Infrastructure/"]
 
-# Restaurar dependencies
+# Restore dependencies
 RUN dotnet restore "TMS.Web.API/TMS.Web.API.csproj"
 
-# Copiar código y compilar
+# Copy everything else and build
 COPY . .
-RUN dotnet publish "TMS.Web.API/TMS.Web.API.csproj" -c Release -o /app/publish
+WORKDIR "/src/TMS.Web.API"
+RUN dotnet build "TMS.Web.API.csproj" -c Release -o /app/build
 
-# Imagen final
+# Publish the app
+RUN dotnet publish "TMS.Web.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Final runtime image
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .

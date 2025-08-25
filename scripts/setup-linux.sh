@@ -21,23 +21,26 @@ fi
 
 # Iniciar contenedores Docker
 echo "Starting Docker containers..."
-docker-compose up -d
+cd deployment/docker
+docker-compose up -d database adminer
+cd ../..
 
-# Esperar a que SQL Server esté listo
+# Esperar a que SQL Server este listo
 echo "Waiting for SQL Server to start (30 seconds)..."
 sleep 30
 
 # Crear la base de datos
 echo "Creating database..."
-cd TMS.Infrastructure
+cd backend/TMS.Infrastructure
 dotnet ef database update --startup-project ../TMS.Web.API
+cd ../..
 
 echo "Setup complete!"
 echo ""
 echo "Next steps:"
-echo "   1. Run: dotnet run --project TMS.Web.API"
+echo "   1. Run: dotnet run --project backend/TMS.Web.API"
 echo "   2. Open: http://localhost:5000/swagger"
 echo "   3. DB Admin: http://localhost:8080"
-echo "      Server: sqlserver"
+echo "      Server: database"
 echo "      Username: sa" 
 echo "      Password: TaskManager2025!"
