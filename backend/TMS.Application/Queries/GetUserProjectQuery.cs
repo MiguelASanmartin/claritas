@@ -3,5 +3,5 @@ using TMS.Application.DTOs.Responses;
 
 namespace TMS.Application.Queries
 {
-    public sealed record GetUserProjectQuery(Guid UserId) : IRequest<IEnumerable<ProjectResponse>>;
+    public sealed record GetUserProjectsQuery(Guid UserId) : IRequest<IEnumerable<ProjectResponse>>;
 }

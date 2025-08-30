@@ -26,6 +26,7 @@ namespace TMS.Infrastructure.Repositories
         {
             return await _context.Tasks
                 .Include(t => t.AssignedToUser)
+                .Include(t => t.Project)
                 .Where(t => t.ProjectId == projectId)
                 .OrderBy(t => t.DueDate)
                 .ToListAsync();

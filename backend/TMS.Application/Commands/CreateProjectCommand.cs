@@ -5,7 +5,7 @@ namespace TMS.Application.Commands
 {
     public sealed record CreateProjectCommand(
         string Name,
-        string? Descripton,
+        string? Description,
         Guid OwnerId,
         DateTime? DueDate
         ) : IRequest<ProjectResponse>;
