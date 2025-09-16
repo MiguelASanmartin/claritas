@@ -94,5 +94,21 @@ namespace TMS.Web.API.Controllers
 #endif
             }
         }
+
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns>List of all users or empty list if none exist</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<UserResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsers()
+        {
+            var query = new GetAllUsersQuery();
+
+            var result = await _mediator.Send(query);
+
+            return this.Ok(result ?? new List<UserResponse>());
+        }
     }
 }

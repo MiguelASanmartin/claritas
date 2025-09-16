@@ -65,5 +65,10 @@ namespace TMS.Application.Extensions
         {
             return projects.Select(p => p.ToResponse());
         }
+
+        public static IEnumerable<UserResponse> ToResponse(this IEnumerable<User> users)
+        {
+            return users.Select(u => u.ToResponse());
+        }
     }
 }

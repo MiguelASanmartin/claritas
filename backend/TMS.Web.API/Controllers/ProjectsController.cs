@@ -115,5 +115,21 @@ namespace TMS.Web.API.Controllers
 #endif
             }
         }
+
+        /// <summary>
+        /// Get all projects
+        /// </summary>
+        /// <returns>List of all projects or empty list if none exist</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ProjectResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects()
+        {
+            var query = new GetAllProjectsQuery();
+
+            var result = await _mediator.Send(query);
+
+            return this.Ok(result ?? new List<ProjectResponse>());
+        }
     }
 }

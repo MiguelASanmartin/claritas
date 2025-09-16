@@ -117,5 +117,20 @@ namespace TMS.Web.API.Controllers
             return this.Ok(result ?? new List<TaskResponse>());
         }
 
+        /// <summary>
+        /// Get all tasks
+        /// </summary>
+        /// <returns>List of all tasks or empty list if none exist</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<TaskResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<TaskResponse>>> GetTasks()
+        {
+            var query = new GetAllTasksQuery();
+
+            var result = await _mediator.Send(query);
+
+            return this.Ok(result ?? new List<TaskResponse>());
+        }
     }
 }
