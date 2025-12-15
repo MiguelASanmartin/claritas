@@ -27,7 +27,10 @@ namespace TMS.Application.Handlers
 
             await _projectRepository.AddAsync(project);
 
-            return project.ToResponse();
+            var projectWithRelations = await _projectRepository.GetByIdAsync(project.Id) 
+                ?? throw new InvalidOperationException($"Failed to retrieve project with ID {project.Id} after creation");
+
+            return projectWithRelations.ToResponse();
         }
     }
 }

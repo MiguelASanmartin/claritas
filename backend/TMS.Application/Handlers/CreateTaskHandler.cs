@@ -36,7 +36,10 @@ namespace TMS.Application.Handlers
 
             await _taskRepository.AddAsync(task);
 
-            return task.ToResponse();
+            var taskWithRelations = await _taskRepository.GetByIdAsync(task.Id)
+                ?? throw new InvalidOperationException($"Failed to retrieve project with ID {task.Id} after creation");
+
+            return taskWithRelations.ToResponse();
         }
 
         private async Task ValidateProjectExists(Guid projectId)
