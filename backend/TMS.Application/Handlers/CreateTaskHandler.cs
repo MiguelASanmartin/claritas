@@ -37,7 +37,7 @@ namespace TMS.Application.Handlers
             await _taskRepository.AddAsync(task);
 
             var taskWithRelations = await _taskRepository.GetByIdAsync(task.Id)
-                ?? throw new InvalidOperationException($"Failed to retrieve project with ID {task.Id} after creation");
+                ?? throw new InvalidOperationException($"Failed to retrieve task with ID {task.Id} after creation");
 
             return taskWithRelations.ToResponse();
         }
