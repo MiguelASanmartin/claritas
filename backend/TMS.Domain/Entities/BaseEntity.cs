@@ -14,7 +14,7 @@ namespace TMS.Domain.Entities
         protected BaseEntity() 
         {
             Id = Guid.NewGuid();
-            CreatedAt = DateTime.Now;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public void AddDomainEvent(IDomainEvent domainEvent)
