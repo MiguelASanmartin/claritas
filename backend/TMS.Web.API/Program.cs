@@ -3,7 +3,10 @@ using TMS.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (OperatingSystem.IsLinux() || Environment.GetEnvironmentVariable("DOCKER_ENV") == "true")
+var isDocker = Environment.GetEnvironmentVariable("DOCKER_ENV") == "true";
+var isProduction = builder.Environment.IsProduction();
+
+if (isDocker || (OperatingSystem.IsLinux() && !isProduction))
 {
     builder.Configuration.AddJsonFile("appsettings.Linux.json", optional: true);
 }
