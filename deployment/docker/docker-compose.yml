@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ../../backend
+      dockerfile: ../../deployment/docker/Dockerfile.api
+    container_name: taskmanager-api
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=database,1433;Database=TaskManagementDB;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=true;MultipleActiveResultSets=true
+    depends_on:
+      - database
+    networks:
+      - taskmanager
+    profiles:
+      - api
+
+  frontend:
+    image: nginx:alpine
+    container_name: taskmanager-frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ../../frontend/build:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+    networks:
+      - taskmanager
+    profiles:
+      - frontend
+
+  notifications:
+    build:
+      context: ../../services/notification-service
+      dockerfile: Dockerfile
+    container_name: taskmanager-notifications
+    ports:
+      - "50051:50051"
+    environment:
+      - GRPC_PORT=50051
+      - DATABASE_CONNECTION=Server=database,1433;Database=TaskManagementDB;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=true
+    depends_on:
+      - database
+    networks:
+      - taskmanager
+    profiles:
+      - notifications
+
+ 
+  ai-service:
+    build:
+      context: ../../services/ai-service
+      dockerfile: Dockerfile
+    container_name: taskmanager-ai
+    ports:
+      - "8000:8000"
+    environment:
+      - API_PORT=8000
+      - DATABASE_URL=Server=database,1433;Database=TaskManagementDB;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=true
+    depends_on:
+      - database
+    networks:
+      - taskmanager
+    profiles:
+      - ai
+
+  # SQL Server Database
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taskmanager-database
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SA_PASSWORD}
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - taskmanager
+
+  # Database Admin Interface
+  adminer:
+    image: adminer
+    container_name: taskmanager-adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - taskmanager
+
+volumes:
+  sqlserver_data:
+
+networks:
+  taskmanager:
